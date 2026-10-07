@@ -1,0 +1,39 @@
+#The Tamil Nadu Civil Supplies Corporation discovered a data anomaly in their Public Distribution System database. During the annual verification at a Fair Price Shop in Madurai, officials found that one ration card number has been assigned to multiple families due to a software bug.
+#Ration card numbers are sequential from 1 to n, but one number appears multiple times, resulting in n+1 entries total. The auditors must identify the duplicate without modifying the original records and using minimal additional memory to comply with data protection regulations.
+#Given an array of n+1 integers where each integer is in the range [1, n] inclusive, find the repeated number. The solution must not modify the array and must use only O(1) extra space (Floyd's Cycle Detection Algorithm).
+
+
+
+class Solution:
+    def findDuplicate(self, nums: list[int]) -> int:
+        # start your solution
+        slow = nums[0]
+        fast = nums[0]
+
+        # Phase 1: find meeting point inside cycle
+        while True:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+            if slow == fast:
+                break
+
+        # Phase 2: find start of cycle = duplicate
+        slow = nums[0]
+        while slow!= fast:
+            slow = nums[slow]
+            fast = nums[fast]
+
+        return slow
+        # end your solution
+
+def main():
+    n = int(input())
+    nums = list(map(int, input().split()))
+
+    sol = Solution()
+    result = sol.findDuplicate(nums)
+
+    print(result)
+
+if __name__ == "__main__":
+    main()

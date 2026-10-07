@@ -1,0 +1,71 @@
+# At the Azadpur Mandi in Delhi, Asia's largest wholesale market for fruits and vegetables, price data is maintained in a matrix. Rows represent different vegetable vendors, and columns represent different buyer categories.
+# When the market surveillance team identifies a suspicious transaction (marked as zero), they must blackout all transactions involving that vendor (entire row) and that buyer category (entire column) for audit review. This prevents any potentially fraudulent patterns from being overlooked.
+# Given an m×n matrix representing transaction values, modify it in-place such that if any cell is 0, its entire row and column are set to 0. The solution must use constant extra space (O(1) auxiliary space).
+
+class Solution:
+    def setZeroes(self, matrix: list[list[int]]) -> None:
+        # start your solution
+        if not matrix or not matrix[0]:
+            return
+
+        m, n = len(matrix), len(matrix[0])
+
+        first_row_has_zero = False
+        first_col_has_zero = False
+
+        # check first row
+        for j in range(n):
+            if matrix[0][j] == 0:
+                first_row_has_zero = True
+                break
+
+        # check first col
+        for i in range(m):
+            if matrix[i][0] == 0:
+                first_col_has_zero = True
+                break
+
+        # use first row/col as markers
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][j] == 0:
+                    matrix[0][j] = 0
+                    matrix[i][0] = 0
+
+        # zero out based on markers
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[0][j] == 0 or matrix[i][0] == 0:
+                    matrix[i][j] = 0
+
+        # zero first row
+        if first_row_has_zero:
+            for j in range(n):
+                matrix[0][j] = 0
+
+        # zero first col
+        if first_col_has_zero:
+            for i in range(m):
+                matrix[i][0] = 0
+        # end your solution
+
+def main():
+    m, n = map(int, input().split())
+    matrix = []
+    for _ in range(m):
+        row = list(map(int, input().split()))
+        matrix.append(row)
+
+    sol = Solution()
+    sol.setZeroes(matrix)
+
+    for row in matrix:
+        print(' '.join(map(str, row)))
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
